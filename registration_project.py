@@ -7,6 +7,8 @@ T=1
 a=4
 p=T*a
 
+g=T^2*a
+
 import numpy as np
 import matplotlib.pyplot as plt
 import registration as reg
