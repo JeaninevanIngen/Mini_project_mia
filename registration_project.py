@@ -1,10 +1,6 @@
 """
 Registration project code.
 """
-T=1
-H=3
-T=H+T
-#bovenstaande toegevoegd
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -88,3 +84,8 @@ def intensity_based_registration_demo():
         learning_curve.set_ydata(similarity)
 
         display(fig)
+        
+        
+        h = 1
+        print(h)
+        
