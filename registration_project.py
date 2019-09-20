@@ -1,11 +1,10 @@
 """
 Registration project code.
 """
-
-#dit zinnetje is er bij toegevoegd door Jeanine
 T=1
-a=4
-p=T*a
+H=3
+T=H+T
+#bovenstaande toegevoegd
 
 import numpy as np
 import matplotlib.pyplot as plt
