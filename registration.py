@@ -81,7 +81,7 @@ def reflect(rx, ry):
 # SECTION 2. Image transformation and least squares fitting
 
 
-def image_transform(I, Th,  output_shape=None):
+def image_transform(Im, Th,  output_shape=None):
     # Image transformation by inverse mapping.
     # Input:
     # I - image to be transformed
@@ -93,11 +93,11 @@ def image_transform(I, Th,  output_shape=None):
     # output to have the same data type as the input - so, we will
     # convert to double and remember the original input type
 
-    input_type = type(I);
+    input_type = type(Im);
 
     # default output size is same as input
     if output_shape is None:
-        output_shape = I.shape
+        output_shape = Im.shape
 
     # spatial coordinates of the transformed image
     x = np.arange(0, output_shape[1])
@@ -114,7 +114,7 @@ def image_transform(I, Th,  output_shape=None):
     Xt = np.linalg.inv(Th).dot(Xh)
     #------------------------------------------------------------------#
 
-    It = ndimage.map_coordinates(I, [Xt[1,:], Xt[0,:]], order=1, mode='constant').reshape(I.shape)
+    It = ndimage.map_coordinates(Im, [Xt[1,:], Xt[0,:]], order=1, mode='constant').reshape(Im.shape)
 
     return It, Xt
 
@@ -151,23 +151,21 @@ def ls_affine(X, Xm):
 
     #------------------------------------------------------------------#
     # TODO: Implement least-squares fitting of an affine transformation.
+    # Use the ls_solve() function that you have previously implemented.
+    print(A.shape)
+    
     b1 = np.transpose(X[0,:])
     b2 = np.transpose(X[1,:])
     
-    w1, _ = ls_solve(A, b1)
-    w2, _ = ls_solve(A, b2)
-    wbottom = np.array([0,0,1])
+    w1= (ls_solve(A, b1)[0])
+    w2= (ls_solve(A, b2)[0])
     
-    print(w1)
-    print(w2)
-    print(wbottom)
-    
-    #T = np.array([[np.transpose(w1)],[np.transpose(w2)],[0,0,1]])
-    
-    T = np.stack((w1,w2,wbottom))
-    
-    
-    # Use the ls_solve() function that you have previously implemented.
+    T=np.eye(3)
+    T[0]=np.transpose(w1)
+    T[1]=np.transpose(w2)
+
+    print(T)
+
     #------------------------------------------------------------------#
 
     return T
