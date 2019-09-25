@@ -33,8 +33,8 @@ def point_based_registration_demo():
     
     # read the fixed and moving images, 2x T1 or T1&T2
     # change these in order to read different images
-    I_path = '../data/image_data/1_1_t1.tif'
-    Im_path = '../data/image_data/1_1_t1_d.tif'
+    I_path = './data/image_data/1_1_t1.tif'
+    Im_path = './data/image_data/1_1_t1_d.tif'
     
     #Select set of corresponding points using my_cpselect
     X, Xm0 = util.my_cpselect(I_path, Im_path)

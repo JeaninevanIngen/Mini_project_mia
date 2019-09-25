@@ -130,7 +130,9 @@ def ls_solve(A, b):
 
     #------------------------------------------------------------------#
     # TODO: Implement the least-squares solution for w.
+    b = np.expand_dims(b,1)
     w = np.linalg.inv(np.transpose(A).dot(A)).dot(np.transpose(A)).dot(b)
+    print(w)
     #------------------------------------------------------------------#
 
     # compute the error
@@ -152,8 +154,7 @@ def ls_affine(X, Xm):
     #------------------------------------------------------------------#
     # TODO: Implement least-squares fitting of an affine transformation.
     # Use the ls_solve() function that you have previously implemented.
-    print(A.shape)
-    
+     
     b1 = np.transpose(X[0,:])
     b2 = np.transpose(X[1,:])
     
@@ -164,7 +165,6 @@ def ls_affine(X, Xm):
     T[0]=np.transpose(w1)
     T[1]=np.transpose(w2)
 
-    print(T)
 
     #------------------------------------------------------------------#
 
@@ -249,7 +249,6 @@ def joint_histogram(I, J, num_bins=16, minmax_range=None):
     # (p.m.f.).
     #------------------------------------------------------------------#
     p = p/n
-
     return p
 
 
@@ -280,7 +279,6 @@ def mutual_information(p):
     # HINT: p_I is a column-vector and p_J is a row-vector so their
     # product is a matrix. You can also use the sum() function here.
     MI = np.sum(np.sum(p*(np.log(p/(p_I.dot(p_J))))))
-    print(MI)
     #------------------------------------------------------------------#
 
     return MI
@@ -314,7 +312,6 @@ def mutual_information_e(p):
     H_J = -np.sum(p_J*np.log(p_J))
     H_IJ = -np.sum(p*np.log(p))
     MI = H_I + H_J - H_IJ
-    print(MI)
     #------------------------------------------------------------------#
 
     return MI
@@ -343,12 +340,8 @@ def ngradient(fun, x, h=1e-3):
         x1[k]=x1[k]+h/2
         x2 = x.copy()
         x2[k]=x2[k]-h/2
-        print(fun(x1))
-        t = (fun(x1)-fun(x2))/h
-        print(t)
+        t = (fun(x1)[0]-fun(x2)[0])/h
         g[k]= t
-    print(g)
-
     #------------------------------------------------------------------#
 
     return g
@@ -371,7 +364,7 @@ def rigid_corr(I, Im, x):
 
     # the first element is the rotation angle
     T = rotate(x[0])
-
+ 
     # the remaining two element are the translation
     #
     # the gradient ascent/descent method work best when all parameters
@@ -382,7 +375,7 @@ def rigid_corr(I, Im, x):
     # scaled down version of the translation vector to this function
     # and then scale it up when computing the transformation matrix
     Th = util.t2h(T, x[1:]*SCALING)
-
+    
     # transform the moving image
     Im_t, Xt = image_transform(Im, Th)
 
@@ -417,12 +410,9 @@ def affine_corr(I, Im, x):
     #X[1] and X[2]: scaling parameters
     #X[3] and X[4]: shearing parameters
     #X[5] and X[6]: translation
-    
-    T= rotate(x[0]).dot(scale(x[1],x[2])).dot(shear([x3],[x4]))
-    T=util.t2h(T,SCALING.dot((x[5],x[6])))
-    
-    Im_t=image_transform(Im,T)
-    
+    T= rotate(x[0]).dot(scale(x[1],x[2])).dot(shear(x[3],x[4]))
+    Th=util.t2h(T,SCALING*np.array([x[5],x[6]]))
+    Im_t=image_transform(Im,Th)[0]
     C=correlation(I,Im_t)
     
     #------------------------------------------------------------------#
@@ -450,9 +440,9 @@ def affine_mi(I, Im, x):
     
     #------------------------------------------------------------------#
     # TODO: Implement the missing functionality
-    T= rotate(x[0]).dot(scale(x[1],x[2])).dot(shear([x3],[x4]))
-    T=util.t2h(T,SCALING.dot((x[5],x[6])))
-    Im_t=image_transform(Im,T)
+    T= rotate(x[0]).dot(scale(x[1],x[2])).dot(shear(x[3],x[4]))
+    Th=util.t2h(T,SCALING*np.array([x[5],x[6]]))
+    Im_t=image_transform(Im,Th)[0]
     MI=mutual_information(joint_histogram(I,Im_t,NUM_BINS))
     #------------------------------------------------------------------#
 
