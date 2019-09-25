@@ -11,8 +11,8 @@ from IPython.display import display, clear_output
 def point_based_registration_demo():
     # read the fixed and moving images, 2x T1 or T1&T2
     # change these in order to read different images
-    I_path = "C:/Users/miria/Documents/Technische Universiteit Eindhoven/Medical Image Analysis/Mini_project_mia/data/image_data/1_1_t1.tif"
-    Im_path = "C:/Users/miria/Documents/Technische Universiteit Eindhoven/Medical Image Analysis/Mini_project_mia/data/image_data/1_1_t1_d.tif"
+    I_path = "./data/image_data/1_1_t1.tif"
+    Im_path = "./data/image_data/1_1_t1_d.tif"
     
     #Select set of corresponding points using my_cpselect
     X, Xm = util.my_cpselect(I_path, Im_path)
@@ -31,13 +31,13 @@ def intensity_based_registration_demo():
 
     # read the fixed and moving images
     # change these in order to read different images
-    I = plt.imread('C:/Users/miria/Documents/Technische Universiteit Eindhoven/Medical Image Analysis/Mini_project_mia/data/image_data/1_1_t1.tif')
-    Im = plt.imread('C:/Users/miria/Documents/Technische Universiteit Eindhoven/Medical Image Analysis/Mini_project_mia/data/image_data/1_1_t1_d.tif')
+    I = plt.imread('./data/image_data/1_1_t1.tif')
+    Im = plt.imread('./data/image_data/1_1_t1_d.tif')
 
     # initial values for the parameters
     # we start with the identity transformation
     # most likely you will not have to change these
-    x = np.array([0., 0., 0.])
+    x = np.array([0., 1., 1., 0., 0., 0., 0.])
 
     # NOTE: for affine registration you have to initialize
     # more parameters and the scaling parameters should be
@@ -48,10 +48,10 @@ def intensity_based_registration_demo():
     # in which the first two input parameters (fixed and moving image)
     # are fixed and the only remaining parameter is the vector x with the
     # parameters of the transformation
-    fun = lambda x: reg.rigid_corr(I, Im, x)
+    fun = lambda x: reg.affine_corr(I, Im, x)
 
     # the learning rate
-    mu = 0.001
+    mu = 0.003
 
     # number of iterations
     num_iter = 200

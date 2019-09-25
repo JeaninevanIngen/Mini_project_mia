@@ -81,7 +81,7 @@ def my_cpselect(I_path, Im_path):
     X = np.zeros((2, k)) #reserve memory
     Xm = np.zeros((2, k)) #reserve memory
 
-    #Take the values of the i'th dicts using the corresponding keys
+    #Take the values of the i'th dictionaries using the corresponding keys
     for i in range(k): 
         
         I_x = controlpointdictlist[i]['img1_x'] 
