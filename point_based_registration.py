@@ -37,22 +37,27 @@ def point_based_registration_demo():
     Im_path = './data/image_data/1_1_t1_d.tif'
     
     #Select set of corresponding points using my_cpselect
-    X, Xm0 = util.my_cpselect(I_path, Im_path)
-
-    #Compute the affine transformation between the pair of images
-    Xm=np.ones((Xm0.shape[0],3))
-    #wside=np.expand_dims(wside, axis=1)
+    X0, Xm0 = util.my_cpselect(I_path, Im_path)
     
-    Xm[:,0]=Xm0[:,0]
-    Xm[:,1]=Xm0[:,1]
-    Xm=np.transpose(Xm)
+    #Compute the affine transformation between the pair of images
+    #Xm=np.ones((Xm0.shape[0],3))
+    #wside=np.expand_dims(wside, axis=1)
+    Xm = np.ones((3, Xm0.shape[1])) 
+    Xm[0,:] =Xm0[0,:]
+    Xm[1,:]=Xm0[1,:]
+    X = np.ones((3, X0.shape[1])) 
+    X[0,:] =X0[0,:]
+    X[1,:]=X0[1,:]
     T = reg.ls_affine(X, Xm)
     
+
     #read image
     Im=plt.imread(Im_path)
     
     #Apply the affine transformation to the moving image
     It, Xt = reg.image_transform(Im, T)
+    
+    plt.imshow(It)
     
     return It, Xt
    
