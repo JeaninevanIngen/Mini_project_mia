@@ -77,7 +77,10 @@ def my_cpselect(I_path, Im_path):
    
     controlpointdictlist = cpselect(I_path, Im_path) #indicate corresponding points on images
     k = len(controlpointdictlist) 
-    
+
+    if k <= 2:
+        raise AssertionError("More points must be selected")
+        
     X = np.zeros((2, k)) #reserve memory
     Xm = np.zeros((2, k)) #reserve memory
 
@@ -93,8 +96,6 @@ def my_cpselect(I_path, Im_path):
         X[:,i] = np.array([I_x, I_y])
         Xm[:,i] = np.array([Im_x, Im_y])
         
-       
-    
     #------------------------------------------------------------------#
 
     return X, Xm
