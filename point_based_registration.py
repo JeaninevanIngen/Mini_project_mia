@@ -54,8 +54,8 @@ def point_based_registration_demo():
     
     # read the fixed and moving images, 2x T1 or T1&T2
     # change these in order to read different images
-    I_path = '../data/image_data/1_1_t1.tif'
-    Im_path = '../data/image_data/1_1_t1d.tif'
+    I_path = '../data/image_data/3_1_t1.tif'
+    Im_path = '../data/image_data/3_1_t2.tif'
     
     #Select set of corresponding points using my_cpselect
     X0, Xm0 = util.my_cpselect(I_path, Im_path)
@@ -71,9 +71,6 @@ def point_based_registration_demo():
     
     Etest=point_based_error(I_path,Im_path,T)
     
-    print(Etest)
-    print(Etrain)
-    
     #read image
     Im=plt.imread(Im_path)
     
@@ -82,13 +79,20 @@ def point_based_registration_demo():
     
     #plot figure
     fig = plt.figure(figsize=(12,5))
-    fig, ax = plt.subplots()
+    #fig, ax = plt.subplots()
     
-    ax.set_title("Transformed image with error: Etrain={} Etest={}".format(Etrain,Etest))
+    ax = fig.add_subplot(121)
+    im = ax.imshow(It)
+    
+    ax.set_title("Transformed image")
     ax.set_xlabel('x')
     ax.set_ylabel('y')
-
-    plt.imshow(It)
+    
+    print(Etrain)
+    print(Etest)
+    
+    display(fig)
+    fig.savefig('C:/Users/s163666/Documents/2019-2020/Medical Image Analysis/Mini_project_mia/pointbased/3_1_t1 + 3_1_t2.png')
     
 
    
