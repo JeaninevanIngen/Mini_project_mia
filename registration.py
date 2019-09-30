@@ -158,8 +158,10 @@ def ls_affine(X, Xm):
     b1 = np.transpose(X[0,:])
     b2 = np.transpose(X[1,:])
     
-    w1, _= ls_solve(A, b1)
-    w2, _= ls_solve(A, b2)
+    w1, Ex= ls_solve(A, b1)
+    w2, Ey= ls_solve(A, b2)
+
+    E=np.array([[Ex],[Ey]])
     
     T=np.eye(3)
     T[0,:]=np.transpose(w1)
@@ -168,7 +170,7 @@ def ls_affine(X, Xm):
 
     #------------------------------------------------------------------#
 
-    return T
+    return T,E
 
 
 # SECTION 3. Image simmilarity metrics
@@ -447,3 +449,23 @@ def affine_mi(I, Im, x):
     #------------------------------------------------------------------#
 
     return MI, Im_t, Th
+
+def point_based_error(I_path,Im_path,T):
+    
+    #Select set of corresponding points using my_cpselect
+    X0, Xm0 = util.my_cpselect(I_path, Im_path)
+    
+    Xm = np.ones((3, Xm0.shape[1])) 
+    Xm[0,:] = Xm0[0,:]
+    Xm[1,:]= Xm0[1,:]
+    X = np.ones((3, X0.shape[1])) 
+    X[0,:] = X0[0,:]
+    X[1,:]= X0[1,:]
+    b1 = np.transpose(X[0,:])
+    b2 = np.transpose(X[1,:])
+    #Compute the affine transformation between the pair of images
+    _, Etestx = reg.ls_solve(T,b1)
+    _, Etesty = reg.ls_solve(T,b2)
+    Etest = np.array([[Etestx],[Etesty]])
+    
+    return Etest

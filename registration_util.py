@@ -49,7 +49,6 @@ def t2h(T, Xt):
     Th[0:2,0:2] = T
     Th[0:2,2] = Xt
     return Th
-    # remove the 'pass' once implemented
     #------------------------------------------------------------------#
     
 
